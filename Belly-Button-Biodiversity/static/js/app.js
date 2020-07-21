@@ -132,7 +132,7 @@ function bubbleChart(id) {
       var data = [trace1];
 
       var layout = {
-        title: "Bubble Chart Hover Text",
+        title: "Bubble Chart",
       };
 
       Plotly.newPlot("bubble", data, layout);
@@ -140,28 +140,88 @@ function bubbleChart(id) {
   });
 }
 
-// function gaugeChart(id) {
-//   $.ajax({
-//     type: "GET",
-//     url: "../data/samples.json",
-//     contentType: "application/json;charset=UTF-8",
-//     success: function (data) {
-//       let sampleData = data["samples"].filter((d) => d.id == id)[0];
+function gaugeChart(id) {
+  $.ajax({
+    type: "GET",
+    url: "../data/samples.json",
+    contentType: "application/json;charset=UTF-8",
+    success: function (data) {
+      let freqData = data["metadata"].map((d) => d.wfreq);
+      console.log(freqData);
+      var traceGauge = {
+        type: "pie",
+        showlegend: false,
+        hole: 0.4,
+        rotation: 90,
+        values: [
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81 / 9,
+          81,
+        ],
+        text: ["0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9"],
+        direction: "clockwise",
+        textinfo: "text",
+        textposition: "inside",
+        marker: {
+          colors: [
+            "rgb(255,255,255",
+            "rgb(247,252,245)",
+            "rgb(224,243,219)",
+            "rgb(199,233,192)",
+            "rgb(161,217,155)",
+            "rgb(116,196,118)",
+            "rgb(65,171,93)",
+            "rgb(35,139,69)",
+            "rgb(0,109,44)",
+            "white",
+          ],
+          labels: [
+            "0-1",
+            "1-2",
+            "2-3",
+            "3-4",
+            "4-5",
+            "5-6",
+            "6-7",
+            "7-8",
+            "8-9",
+          ],
+          hoverinfo: "label",
+        },
+      };
+      var data = [traceGauge];
 
-//       var data = [
-//         {
-//           domain: { x: sampleData["otu_ids"], y: sampleData["sample_values"] },
-//           title: { text: "Scrubs Per Week" },
-//           type: "indicator",
-//           mode: "gauge+number",
-//         },
-//       ];
+      var layout = {
+        shapes: [
+          {
+            type: "line",
+            x0: 0.5,
+            y0: 0.5,
+            x1: 0.6,
+            y1: 0.6,
+            line: {
+              color: "black",
+              width: 3,
+            },
+          },
+        ],
+        title: "Chart",
+        width: 600,
+        height: 500,
+        margin: { t: 0, b: 0 },
+      };
 
-//       var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
-//       Plotly.newPlot("gauge", data, layout);
-//     },
-//   });
-// }
+      Plotly.newPlot("gauge", data, layout);
+    },
+  });
+}
 
 function optionChanged(id) {
   loadMetaData(id);
